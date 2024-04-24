@@ -64,8 +64,8 @@ const FormContainer = () => {
 
     const object = {
       id: Math.random(),
-      first_name: formValues.firstName,
-      last_name: formValues.lastName,
+      first_name: formValues.firstNameValue,
+      last_name: formValues.lastNameValue,
       email: formValues.emailValue,
       password: formValues.passwordValue,
       street: formValues.addressValue,
