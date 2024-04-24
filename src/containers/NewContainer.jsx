@@ -13,7 +13,7 @@ function NewContainer(args) {
         Creart New Account
       </Button>
       <Modal isOpen={modal} toggle={toggle} {...args}>
-        <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+        <ModalHeader toggle={toggle}>Create new account</ModalHeader>
         <ModalBody>
          <FormContainer/>
         </ModalBody>
