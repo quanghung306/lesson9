@@ -4,7 +4,7 @@ import { useAppContext } from "../contexts/AppContainer.context";
 
 const TableContainer = () => {
    const appContext = useAppContext();
-   const { dataList, onEditChange,onDeleteData } = appContext;
+   const { dataList, onEditChange, onDeleteData } = appContext;
    return (
       <Table hover>
          <thead>
@@ -13,6 +13,8 @@ const TableContainer = () => {
                <th>First Name</th>
                <th>Last Name</th>
                <th>Email</th>
+               <th>department</th>
+               <th>Position</th>
                <th>Phone Number</th>
                <th>Street</th>
                <th>Action</th>
@@ -25,6 +27,8 @@ const TableContainer = () => {
                   <td>{data.first_name}</td>
                   <td>{data.last_name}</td>
                   <td>{data.email}</td>
+                  <td>{data.department}</td>
+                  <td>{data.Position}</td>
                   <td>{data.phone}</td>
                   <td>{data.street}</td>
                   <td>

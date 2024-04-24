@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "reactstrap";
+import { Button,  Form,  Row } from "reactstrap";
 import FormField from "../components/FormField";
 import { useAppContext } from "../contexts/AppContainer.context";
+import SelectForm from "../components/SelectForm";
 
-const FormContainer = () => {
-  const appContext = useAppContext();
-  const { onSubmitData, onUpdateData, editInfoData } = appContext;
+const FormContainer = ({ editInfoData }) => {
+  const options = [
+    {
+        label: 'Dev',
+        value: 'Dev'
+    },
+    {
+        label: 'Director',
+        value: 'Director'
+    },
+    {
+        label: 'Person',
+        value: 'Person'
+    },
+ ]
+  const { onSubmitData, onUpdateData } = useAppContext();
 
   const [formValues, setFormValues] = useState({
     emailValue: "",
@@ -14,7 +28,9 @@ const FormContainer = () => {
     phoneNumber: "",
     firstNameValue: "",
     lastNameValue: "",
+    selectValue: "",
   });
+  
 
   const onFormChange = (e) => {
     const name = e.target.name;
@@ -27,29 +43,33 @@ const FormContainer = () => {
 
   useEffect(() => {
     if (editInfoData) {
-      const { firstName, lastName, email, phoneNumber, password, address } =
-        editInfoData;
-      setFormValues((previousState) => {
-        return {
-          ...previousState,
-          firstNameValue: firstName,
-          lastNameValue: lastName,
-          emailValue: email,
-          phoneNumber: phoneNumber,
-          passwordValue: password,
-          addressValue: address,
-        };
+      const {
+        first_name,
+        last_name,
+        email,
+        phone,
+        password,
+        street,
+        department,
+      } = editInfoData;
+      setFormValues({
+        firstNameValue: first_name,
+        lastNameValue: last_name,
+        emailValue: email,
+        phoneNumber: phone,
+        passwordValue: password,
+        addressValue: street,
+        selectValue:department,
       });
     } else {
-      setFormValues(() => {
-        return {
-          firstNameValue: "",
-          lastNameValue: "",
-          emailValue: "",
-          phoneNumber: "",
-          passwordValue: "",
-          addressValue: "",
-        };
+      setFormValues({
+        firstNameValue: "",
+        lastNameValue: "",
+        emailValue: "",
+        phoneNumber: "",
+        passwordValue: "",
+        addressValue: "",
+        selectValue:"",
       });
     }
   }, [editInfoData]);
@@ -70,87 +90,90 @@ const FormContainer = () => {
       password: formValues.passwordValue,
       street: formValues.addressValue,
       phone: formValues.phoneNumber,
+      department: formValues.selectValue,
     };
 
     onSubmitData(object);
   };
 
-  //   const onUpdate = (e) => {
-  //     e.preventDefault();
+  const onUpdate = (e) => {
+    e.preventDefault();
 
-  //     if (isNaN(formValues.phoneNumber)) {
-  //       alert("Please enter a valid phone number");
-  //       return;
-  //     }
+    if (isNaN(formValues.phoneNumber)) {
+      alert("Please enter a valid phone number");
+      return;
+    }
 
-  //     const object = {
-  //       id: editInfoData?.id,
-  //       first_name: formValues.firstName,
-  //       last_name: formValues.lastName,
-  //       email: formValues.emailValue,
-  //       password: formValues.passwordValue,
-  //       street: formValues.addressValue,
-  //       phone: formValues.phoneNumber,
-  //     };
+    const object = {
+      id: editInfoData?.id,
+      first_name: formValues.firstNameValue,
+      last_name: formValues.lastNameValue,
+      email: formValues.emailValue,
+      password: formValues.passwordValue,
+      street: formValues.addressValue,
+      phone: formValues.phoneNumber,
+      department: formValues.selectValue,
+    };
 
-  //     onUpdateData(object);
-  //   };
+    onUpdateData(object);
+  };
 
   return (
-    //  <Form onSubmit={editInfoData ? onUpdate : onSubmit}>
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={editInfoData ? onUpdate : onSubmit}>
       <Row>
         <FormField
           name="firstNameValue"
-          placeholder="firstName placeholder"
-          label="firstName"
+          placeholder="First Name"
+          label="First Name"
           type="text"
           value={formValues.firstNameValue}
           onChange={onFormChange}
         />
         <FormField
           name="lastNameValue"
-          placeholder="lastName placeholder"
-          label="lastName"
+          placeholder="Last Name"
+          label="Last Name"
           type="text"
           value={formValues.lastNameValue}
           onChange={onFormChange}
         />
         <FormField
           name="emailValue"
-          placeholder="Email placeholder"
+          placeholder="Email"
           label="Email"
           type="email"
           value={formValues.emailValue}
           onChange={onFormChange}
         />
-        {/* <FormField
-          name="passwordValue"
-          placeholder="Password placeholder"
-          label="Password"
-          type="password"
-          value={formValues.passwordValue}
-          onChange={onFormChange}
-        /> */}
       </Row>
+      <SelectForm
+              name="select"
+              label="Select"
+              type="select"
+              value={formValues.selectValue}
+              onChange={onFormChange}
+              options={options}
+            >
+            </SelectForm>
+
       <FormField
         name="phoneNumber"
-        placeholder="PhoneNumber placeholder"
-        label="phone"
+        placeholder="Phone Number"
+        label="Phone Number"
         type="text"
         value={formValues.phoneNumber}
         onChange={onFormChange}
       />
       <FormField
         name="addressValue"
-        placeholder="Address placeholder"
-        label="street"
+        placeholder="Address"
+        label="Address"
         type="text"
         value={formValues.addressValue}
         onChange={onFormChange}
       />
       <Button type="submit" color="primary">
-        Create
+        {editInfoData ? "Update" : "Add New"}
       </Button>
     </Form>
   );
