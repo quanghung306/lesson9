@@ -11,9 +11,9 @@ const SelectForm = (props) => {
         value={props.value}
         onChange={props.onChange}
       >
-        {props.options.map((element) => (
-          <option value={element.value} key={element.value}>
-            {element.label}
+        {props.options.map((e) => (
+          <option value={e.value} key={e.value}>
+            {e.label}
           </option>
         ))}
       </Input>

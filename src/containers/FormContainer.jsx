@@ -1,24 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { Button,  Form,  Row } from "reactstrap";
+import { Button, Form, Row } from "reactstrap";
 import FormField from "../components/FormField";
 import { useAppContext } from "../contexts/AppContainer.context";
 import SelectForm from "../components/SelectForm";
+import PositionForm from "../components/PositionForm";
+const options = [
+  {
+    label: "Dev",
+    value: "Dev",
+  },
+  {
+    label: "Director",
+    value: "Director",
+  },
+  {
+    label: "Person",
+    value: "Person",
+  },
+];
+const option = [
+  {
+    label: "money",
+    value: "money",
+  },
+  {
+    label: "cash",
+    value: "cash",
+  },
+  {
+    label: "card",
+    value: "card",
+  },
+];
 
 const FormContainer = ({ editInfoData }) => {
-  const options = [
-    {
-        label: 'Dev',
-        value: 'Dev'
-    },
-    {
-        label: 'Director',
-        value: 'Director'
-    },
-    {
-        label: 'Person',
-        value: 'Person'
-    },
- ]
+  
   const { onSubmitData, onUpdateData } = useAppContext();
 
   const [formValues, setFormValues] = useState({
@@ -29,8 +45,8 @@ const FormContainer = ({ editInfoData }) => {
     firstNameValue: "",
     lastNameValue: "",
     selectValue: "",
+    PositionValue:"",
   });
-  
 
   const onFormChange = (e) => {
     const name = e.target.name;
@@ -51,6 +67,7 @@ const FormContainer = ({ editInfoData }) => {
         password,
         street,
         department,
+        Position,
       } = editInfoData;
       setFormValues({
         firstNameValue: first_name,
@@ -59,7 +76,8 @@ const FormContainer = ({ editInfoData }) => {
         phoneNumber: phone,
         passwordValue: password,
         addressValue: street,
-        selectValue:department,
+        selectValue: department,
+        PositionValue:Position,
       });
     } else {
       setFormValues({
@@ -69,7 +87,8 @@ const FormContainer = ({ editInfoData }) => {
         phoneNumber: "",
         passwordValue: "",
         addressValue: "",
-        selectValue:"",
+        selectValue: "",
+        PositionValue:"",
       });
     }
   }, [editInfoData]);
@@ -91,19 +110,13 @@ const FormContainer = ({ editInfoData }) => {
       street: formValues.addressValue,
       phone: formValues.phoneNumber,
       department: formValues.selectValue,
+      Position:formValues.PositionValue,
     };
-
     onSubmitData(object);
   };
 
   const onUpdate = (e) => {
     e.preventDefault();
-
-    if (isNaN(formValues.phoneNumber)) {
-      alert("Please enter a valid phone number");
-      return;
-    }
-
     const object = {
       id: editInfoData?.id,
       first_name: formValues.firstNameValue,
@@ -113,11 +126,10 @@ const FormContainer = ({ editInfoData }) => {
       street: formValues.addressValue,
       phone: formValues.phoneNumber,
       department: formValues.selectValue,
+      Position:formValues.PositionValue,
     };
-
     onUpdateData(object);
   };
-
   return (
     <Form onSubmit={editInfoData ? onUpdate : onSubmit}>
       <Row>
@@ -147,14 +159,19 @@ const FormContainer = ({ editInfoData }) => {
         />
       </Row>
       <SelectForm
-              name="select"
-              label="Select"
-              type="select"
-              value={formValues.selectValue}
-              onChange={onFormChange}
-              options={options}
-            >
-            </SelectForm>
+        name="selectValue"
+        label="department"
+        value={formValues.selectValue}
+        onChange={onFormChange}
+        options={options}
+      />
+      <PositionForm
+        name="PositionValue"
+        label="Position"
+        value={formValues.PositionValue}
+        onChange={onFormChange}
+        option={option}
+      />
 
       <FormField
         name="phoneNumber"
